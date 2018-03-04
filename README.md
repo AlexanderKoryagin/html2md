@@ -1,3 +1,4 @@
+### Задание
 Написать на Python конвертер из HTML в Markdown.
 
 При запуске конвертер должен принимать в качестве обязательного аргумента
@@ -11,6 +12,7 @@
 Поддержка всех HTML тегов не требуется.
 Достаточно будет, если конвертер преобразует в Markdown следующий HTML текст:
 
+```html
 <html>
     <head>
         <title>Простой текст</title>
@@ -22,3 +24,17 @@
         <p>Это второй параграф.</p>
     </body>
 </html>
+```
+
+---
+```
+USAGE:
+    # pip install -U -r requirements.txt
+    # ./converter.py -f test_1_en.html
+
+To run code analysis and unittests:
+    # ./run_tests.sh
+```
+
+**TODO**:
+* Добавить поддержку русских HTML страниц;

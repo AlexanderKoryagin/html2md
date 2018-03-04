@@ -1,21 +1,25 @@
+#!/usr/bin/env python
 """
-Script for conversion from HTML to MarkDown.
+Script for simple conversion from HTML to MarkDown.
 """
 
 import argparse
-from converter.converter import Converter
+
+from converter import tools
+
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description='HTML to MD converter')
-    required_args = parser.add_argument_group('required arguments')
+    # create arguments for a script
+    PARSER = argparse.ArgumentParser(description='HTML to MD converter')
+    REQ_ARGS = PARSER.add_argument_group('required arguments')
 
-    parser.add_argument(
+    PARSER.add_argument(
         '-e', '--encoding', default='utf-8', help='Encoding of a HTML page')
-    required_args.add_argument(
+    REQ_ARGS.add_argument(
         '-f', '--file', required=True, help='HTML page path')
 
-    args = parser.parse_args()
+    ARGS = PARSER.parse_args()
 
     print (
         "{delim}\n"
@@ -24,11 +28,19 @@ if __name__ == "__main__":
         "{delim}\n"
         "".format(
             delim="=" * 40,
-            file=args.file,
-            encod=args.encoding
+            file=ARGS.file,
+            encod=ARGS.encoding
         )
     )
 
-    Conv = Converter(file_path=args.file, encoding=args.encoding)
-    print Conv.to_md()
+    # read file
+    READER = tools.FileReader(
+        file_path=ARGS.file,
+        encoding=ARGS.encoding
+    )
+    html_str = READER.read_file()  # pylint: disable=invalid-name
 
+    # convert html to MD
+    CONV = tools.HTMLToMD()
+    CONV.feed(html_str)
+    print CONV.out
