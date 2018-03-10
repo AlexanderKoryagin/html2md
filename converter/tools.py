@@ -63,7 +63,7 @@ class FileReader(object):
         self.file_path = file_path
         self.encoding = encoding
 
-    def check_file_exist(self):
+    def __check_file_exist(self):
         """Check if file with provided file path exists"""
         if not os.path.isfile(self.file_path):
             raise IOError(
@@ -76,7 +76,7 @@ class FileReader(object):
         """Read file.
         :return: (str) Stripped lines.
         """
-        self.check_file_exist()
+        self.__check_file_exist()
         with open(self.file_path, 'r') as fileo:
             result = "".join([x.strip() for x in fileo.readlines()])
             result = result.decode(self.encoding)
