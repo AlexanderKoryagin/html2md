@@ -35,6 +35,14 @@ class HTMLToMD(HTMLParser):
         if tag not in self.supported_html_tags:
             raise ValueError("Tag '%s' unsupported" % tag)
 
+    def check_last_tag(self):
+        """Check content of `self.lasttag`"""
+        if self.lasttag == '???':
+            raise TypeError(
+                'Probably this is not html document. self.lasttag is "{}"'
+                ''.format(self.lasttag)
+            )
+
     def handle_starttag(self, tag, attrs):
         """Handle start tag"""
         self.check_html_tag(tag)
@@ -45,6 +53,7 @@ class HTMLToMD(HTMLParser):
     def handle_data(self, data):
         """Handle data between start and end tag"""
         # check if there is a need to display this data
+        self.check_last_tag()
         if HTML_TO_MD_MAP[self.lasttag] is not None:
             self.out += data
 

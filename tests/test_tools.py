@@ -10,6 +10,9 @@ from converter.tools import HTMLToMD
 from tests import examples
 
 
+xfail = pytest.mark.xfail(strict=True)
+
+
 @pytest.mark.parametrize(
     'initial, expected',
     (
@@ -32,7 +35,7 @@ def test_generation(initial, expected):
     'file_path',
     (
         'test_1_en.html',
-        pytest.mark.xfail('fake_file.html', strict=True, raises=IOError)
+        xfail('fake_file.html', raises=IOError)
     ),
 )
 def test_file_open(file_path):
@@ -41,10 +44,15 @@ def test_file_open(file_path):
     reader.read_file()
 
 
-@pytest.mark.xfail(strict=True, raises=ValueError)
-def test_file_open_unsupported_tag():
+@pytest.mark.parametrize(
+    'file_path',
+    (
+        xfail('tests/example_3_err.html', raises=ValueError),
+        xfail('tests/example_4.txt', raises=TypeError),
+    ),
+)
+def test_file_open_unsupported_tag(file_path):
     """Test handling of unsupported tags"""
-    file_path = 'tests/example_3_err.html'
     html_reader = FileReader(file_path=file_path)
     html_str = html_reader.read_file()
     conv = HTMLToMD()
